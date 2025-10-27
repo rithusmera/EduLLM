@@ -5,13 +5,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-with open(r'.\Embeddings\Sample_embeddings.json','r',encoding='utf-8') as file:
+with open(r'Chapters\Physics\Class 11\Chap1_Embeddings.json','r',encoding='utf-8') as file:
     chunks = json.load(file)
 
 embeddings = []
 
 for chunk in chunks:
-    embeddings.append(chunk['Embedding'])
+    embeddings.append(chunk['embedding'])
 
 embeddings = np.array(embeddings)
 
@@ -32,10 +32,9 @@ while True:
     for idx in top_indices:
         score = similarity[idx]
         section = chunks[idx]
-        print(f"\n🔹 Title: {section['Title']} (Chunk {section['Chunk No.']}/{section['Total Chunks']})")
-        print(f"   Section ID: {section['Section ID']}")
+        print(f"\n🔹 Section: {section['section_title']}, Title: {section['title']} (Chunk {section['chunk_no']}/{section['total_chunks']})")
         print(f"   Similarity Score: {score:.4f}")
-        print(f"   Content Preview:\n{section['Body'][:500]}...")
+        print(f"   Content Preview:\n{section['content'][:500]}...")
 
 
 
