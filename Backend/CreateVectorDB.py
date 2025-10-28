@@ -54,6 +54,7 @@ for e in embeddings:
         continue
 
     embedding = np.array(e['embedding'], dtype='float32').reshape(1, -1)
+    embedding /= np.linalg.norm(embedding) 
     index.add_with_ids(embedding, np.array([counter], dtype='int64'))
 
     cursor.execute('''INSERT OR REPLACE INTO chunks(
