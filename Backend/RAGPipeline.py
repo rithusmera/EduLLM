@@ -9,24 +9,27 @@ DB_PATH = 'edu_chunks.db'
 IDX_PATH = 'edu_index.faiss'
 TOP_K = 3
 MODEL = 'mistral'
+conn = sqlite3.connect(DB_PATH)
 
 def load_index(IDX_PATH):
     return faiss.read_index(IDX_PATH)
 
-def search_faiss(index, query_vec, k):
+def search_faiss(index, embedder, query, k):
     '''Similarity search in faiss index'''
 
-    _ , indices = index.search(query_vec, k)
-    return indices[0]
+    vec = embedder.encode([query]).astype('float32')
+    vec /= np.linalg.norm(vec, axis=1, keepdims=True)
+    _, ids = index.search(vec, k)
+    return ids[0]
 
 def retrieve_similar_chunks(conn, ids):
-    '''Retrieve chunks of ids obtained from faiss search'''
-
-    cursor = conn.cursor()
+    '''Retrieve chunks of index obtained from faiss search'''
 
     ids = [int(i) for i in ids if i != -1]  
     if not ids:
         return {}
+    
+    cursor = conn.cursor()
 
     placeholder = ','.join('?' * len(ids))
     query= f'SELECT chunk_id, content, parent_section_id FROM chunks WHERE chunk_id IN ({placeholder})'
@@ -57,7 +60,7 @@ def run_ollama(prompt, model):
     cmd = ['ollama', 'run', model]
     process = subprocess.Popen(cmd, stdin= subprocess.PIPE, stdout= subprocess.PIPE, text=True)
     stdout, _ = process.communicate(prompt)
-    return stdout
+    return stdout.strip()
 
 def detect_direct_ref(query):
     '''Direct similarity check from query for words like table, figure, example or exercise'''
@@ -68,12 +71,17 @@ def detect_direct_ref(query):
         return f'{match.group(1).lower()} {match.group(2)}'
     return None
 
+def process_query(query, index):
+    global last_retrieved_chunk
+
+    ids = search_faiss(index, query, TOP_K)
+    texts = retrieve_similar_chunks(conn, ids)
+
+
 def main():
-
+    #Testing code
     embedder = SentenceTransformer('all-MiniLM-L6-v2')
-
     index = load_index(IDX_PATH)
-    conn = sqlite3.connect(DB_PATH)
 
     print("EduLLM RAG Pipeline (type 'exit' to quit)")
 
@@ -106,10 +114,7 @@ def main():
                             context+= "\n".join(parent_section.values())
                 
             else:
-                query_vector = embedder.encode([query]).astype('float32').reshape(1, -1)
-                query_vector /= np.linalg.norm(query_vector, axis=1, keepdims=True)
-
-                ids = search_faiss(index, query_vector, TOP_K)
+                ids = search_faiss(index, embedder, query, TOP_K)
                 texts = retrieve_similar_chunks(conn, ids)
 
                 if texts: 
@@ -127,11 +132,8 @@ def main():
                                 context+= "\n".join(parent_section.values())                    
 
         else:    
-            print('Title match now found')                                         
-            query_vector = embedder.encode([query]).astype('float32').reshape(1, -1)
-            query_vector /= np.linalg.norm(query_vector, axis=1, keepdims=True)
-
-            ids = search_faiss(index, query_vector, TOP_K)
+            print('Title match not found')                                         
+            ids = search_faiss(index, embedder, query, TOP_K)
             print(f'Ids retrieved:{ids}')
             texts = retrieve_similar_chunks(conn, ids)
             print(f"Texts retreived via faiss similarity search: {texts.keys()}")
