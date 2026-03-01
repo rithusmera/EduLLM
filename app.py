@@ -8,7 +8,6 @@ import llm_client
 DB_PATH = 'edu_chunks.db'
 IDX_PATH = 'edu_index.faiss'
 MODEL_NAME = 'all-MiniLM-L6-v2'
-LLM_MODEL = 'mistral'
 TOP_K_DEFAULT = 3
 
 @st.cache_resource
@@ -68,7 +67,7 @@ if st.button("Generate Answer"):
             else:
                 full_prompt = f"Answer this question: {query}"
 
-            answer = llm_client.run_ollama(full_prompt, LLM_MODEL)
+            answer = llm_client.run_ollama(full_prompt)
 
         st.subheader("Answer")
         st.write(answer)

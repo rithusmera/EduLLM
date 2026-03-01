@@ -3,11 +3,11 @@ import sqlite3
 from sentence_transformers import SentenceTransformer
 import re
 import numpy as np
+import llm_client
 
 DB_PATH = 'edu_chunks.db'
 IDX_PATH = 'edu_index.faiss'
 TOP_K = 3
-MODEL = 'mistral'
 conn = sqlite3.connect(DB_PATH)
 
 def load_index(IDX_PATH):
@@ -63,13 +63,6 @@ def detect_direct_ref(query):
     if match:
         return f'{match.group(1).lower()} {match.group(2)}'
     return None
-
-def process_query(query, index):
-    global last_retrieved_chunk
-
-    ids = search_faiss(index, query, TOP_K)
-    texts = retrieve_similar_chunks(conn, ids)
-
 
 def main():
     #Testing code
@@ -150,7 +143,7 @@ def main():
 
         print(f'\n\n{full_prompt}')
         print('Model Response: \n')
-        answer = run_ollama(full_prompt, MODEL)
+        answer = llm_client.run_ollama(full_prompt)
         print(answer)
 
     conn.close()
@@ -158,4 +151,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
