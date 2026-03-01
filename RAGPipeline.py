@@ -1,7 +1,6 @@
 import faiss
 import sqlite3
 from sentence_transformers import SentenceTransformer
-import subprocess
 import re
 import numpy as np
 
@@ -55,12 +54,6 @@ def retrieve_by_id(id, conn):
     if row:
         return {row[0]: row[1]}
     return None
-
-def run_ollama(prompt, model):
-    cmd = ['ollama', 'run', model]
-    process = subprocess.Popen(cmd, stdin= subprocess.PIPE, stdout= subprocess.PIPE, text=True)
-    stdout, _ = process.communicate(prompt)
-    return stdout.strip()
 
 def detect_direct_ref(query):
     '''Direct similarity check from query for words like table, figure, example or exercise'''

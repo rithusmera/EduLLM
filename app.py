@@ -3,6 +3,7 @@ import faiss
 import sqlite3
 from sentence_transformers import SentenceTransformer
 import RAGPipeline
+import llm_client
 
 DB_PATH = 'edu_chunks.db'
 IDX_PATH = 'edu_index.faiss'
@@ -67,7 +68,7 @@ if st.button("Generate Answer"):
             else:
                 full_prompt = f"Answer this question: {query}"
 
-            answer = RAGPipeline.run_ollama(full_prompt, LLM_MODEL)
+            answer = llm_client.run_ollama(full_prompt, LLM_MODEL)
 
         st.subheader("Answer")
         st.write(answer)
