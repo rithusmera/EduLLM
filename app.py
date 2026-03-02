@@ -2,8 +2,9 @@ import streamlit as st
 import faiss
 import sqlite3
 from sentence_transformers import SentenceTransformer
-import RAGPipeline
 import llm_client
+import RAGPipeline
+import quiz_generator
 
 DB_PATH = 'edu_chunks.db'
 IDX_PATH = 'edu_index.faiss'
@@ -55,15 +56,19 @@ if st.button("Generate Answer"):
                 retrieved_chunks = RAGPipeline.retrieve_similar_chunks(conn, ids)
 
             if retrieved_chunks:
+                print(retrieved_chunks)
                 context += "\n\n".join(chunk['content'] for chunk in retrieved_chunks.values())
                 for chunk in retrieved_chunks.values():
                     if chunk['parent_section_id']:
                         parent = RAGPipeline.retrieve_by_id(chunk['parent_section_id'], conn)
                         if parent:
                             context += "\n" + "\n".join(parent.values())
+                
+                st.session_state.last_chunks = retrieved_chunks
 
             if context:
                 full_prompt = f"Get context for the question from the given text. Don't limit yourself to the text:\n\n{context}\n\nQuestion: {query}"
+                st.session_state.last_context = context
             else:
                 full_prompt = f"Answer this question: {query}"
 
@@ -75,6 +80,47 @@ if st.button("Generate Answer"):
         if show_context and context:
             st.subheader("Retrieved Context")
             st.text_area("Context", context, height=300)
+
+st.sidebar.markdown("---")
+if st.sidebar.button("📝 Generate Quiz from Context"):
+    if "last_context" in st.session_state and st.session_state.last_context:
+
+        first_chunk = list(st.session_state.last_chunks.values())[0]
+        
+        with st.spinner("Generating question..."):
+            q_data = quiz_generator.generate_mcq(st.session_state.last_context, first_chunk)
+            if q_data:
+                st.session_state.current_question = q_data
+                st.session_state.answer_submitted = False
+                st.rerun()
+            else:
+                st.error("🤖 The AI is having trouble formatting the question. Please try clicking the button again!")
+    else:
+        st.error("Please search for a topic first to provide context for the quiz!")
+
+if "current_question" in st.session_state:
+    q = st.session_state.current_question
+    
+    st.markdown("---")
+    st.subheader("Knowledge Check")
+    st.write(q['question'])
+    
+    options_list = [f"{k}) {v}" for k, v in q['options'].items()]
+    
+    user_choice = st.radio("Select the correct answer:", options_list, key="quiz_radio")
+    
+    if st.button("Submit Answer"):
+        st.session_state.answer_submitted = True
+        selected_letter = user_choice[0] # Gets 'A', 'B', etc.
+        
+        if quiz_generator.grade_mcq(q, selected_letter):
+            st.session_state.feedback = "✅ Correct! Well done."
+        else:
+            st.session_state.feedback = f"❌ Incorrect. The correct answer was {q['correct_option']}."
+            st.info(f"Hint: {q['hint']}")
+
+    if st.session_state.get('answer_submitted'):
+        st.markdown(f"**{st.session_state.feedback}**")
 
 st.markdown("---")
 st.caption("Powered by local FAISS, SQLite, and Ollama for fully offline learning.")
