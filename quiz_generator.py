@@ -3,26 +3,53 @@ import json
 import llm_client
 
 MCQ_PROMPT = """
-You are a Physics teacher generating a multiple-choice question based on the textbook context provided.
+You are a Physics teacher creating a small concept check quiz.
 
-Output ONLY a valid JSON object. Do not include any introductory text, markdown formatting (like ```json), or explanations
-IMPORTANT: If using LaTeX or backslashes, escape them properly for JSON (use \\\\).
+Generate THREE multiple-choice questions based on the textbook context.
 
-The JSON object must have these keys:
-- "question": The question text.
-- "options": A dictionary with keys "A", "B", "C", "D".
-- "correct_option": The letter "A", "B", "C", or "D".
-- "hint": A small hint based on the context.
+Difficulty requirements:
+1st question: EASY
+2nd question: MEDIUM
+3rd question: HARD
+
+Return ONLY valid JSON.
+
+Format:
+
+{{
+ "questions":[
+  {{
+   "difficulty":"easy",
+   "question":"...",
+   "options":{{"A":"...","B":"...","C":"...","D":"..."}},
+   "correct_option":"A",
+   "hint":"..."
+  }},
+  {{
+   "difficulty":"medium",
+   "question":"...",
+   "options":{{"A":"...","B":"...","C":"...","D":"..."}},
+   "correct_option":"A",
+   "hint":"..."
+  }},
+  {{
+   "difficulty":"hard",
+   "question":"...",
+   "options":{{"A":"...","B":"...","C":"...","D":"..."}},
+   "correct_option":"A",
+   "hint":"..."
+  }}
+ ]
+}}
 
 Textbook Context:
-------------------
 {context}
 """
 
 def generate_mcq(context, metadata, max_retries = 3):
     prompt = MCQ_PROMPT.format(context = context)
 
-    for attempt in range(max_retries): #If first attempt to get a response in proper json format fails, try again
+    for _ in range(max_retries): #If first attempt to get a response in proper json format fails, try again
         response = llm_client.run_ollama(prompt) #LLM return response in json format
         clean_response = clean_json_string(response)
         
@@ -43,6 +70,8 @@ def generate_mcq(context, metadata, max_retries = 3):
         except Exception as e:
             print(f"Parsing Error: {e} | Raw Response: {response}")
             continue
+    
+    return None
 
 def clean_json_string(text):
     '''Remove any extra text before and after the json string'''
