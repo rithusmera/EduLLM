@@ -4,12 +4,18 @@ import sqlite3
 from sentence_transformers import SentenceTransformer
 import llm_client
 import RAGPipeline
-import quiz_generator
+import concept_quiz
 
 DB_PATH = 'edu_chunks.db'
 IDX_PATH = 'edu_index.faiss'
 MODEL_NAME = 'all-MiniLM-L6-v2'
 TOP_K_DEFAULT = 3
+
+difficulty_points = {
+    "easy": 1,
+    "medium": 2,
+    "hard": 3
+}
 
 @st.cache_resource
 def load_resources():
@@ -81,46 +87,110 @@ if st.button("Generate Answer"):
             st.subheader("Retrieved Context")
             st.text_area("Context", context, height=300)
 
+
+#quiz generation
 st.sidebar.markdown("---")
-if st.sidebar.button("📝 Generate Quiz from Context"):
+st.sidebar.text('Take a quick quiz to check if you understood the concept!')
+if st.sidebar.button("📝Take quiz"):
     if "last_context" in st.session_state and st.session_state.last_context:
 
         first_chunk = list(st.session_state.last_chunks.values())[0]
         
         with st.spinner("Generating question..."):
-            q_data = quiz_generator.generate_mcq(st.session_state.last_context, first_chunk)
-            if q_data:
-                st.session_state.current_question = q_data
-                st.session_state.answer_submitted = False
+            quiz_data = concept_quiz.generate_concept_quiz(
+                st.session_state.last_context,
+                first_chunk
+            )
+
+            if quiz_data:
+                st.session_state.quiz = quiz_data
+                st.session_state.quiz_index = 0
+                st.session_state.quiz_score = 0
+                st.session_state.quiz_answered = False
+                st.session_state.quiz_feedback = None
+                st.session_state.quiz_answer_submitted = False
+
                 st.rerun()
+
             else:
                 st.error("🤖 The AI is having trouble formatting the question. Please try clicking the button again!")
     else:
         st.error("Please search for a topic first to provide context for the quiz!")
 
-if "current_question" in st.session_state:
-    q = st.session_state.current_question
-    
-    st.markdown("---")
-    st.subheader("Knowledge Check")
-    st.write(q['question'])
-    
-    options_list = [f"{k}) {v}" for k, v in q['options'].items()]
-    
-    user_choice = st.radio("Select the correct answer:", options_list, key="quiz_radio")
-    
-    if st.button("Submit Answer"):
-        st.session_state.answer_submitted = True
-        selected_letter = user_choice[0] # Gets 'A', 'B', etc.
-        
-        if quiz_generator.grade_mcq(q, selected_letter):
-            st.session_state.feedback = "✅ Correct! Well done."
-        else:
-            st.session_state.feedback = f"❌ Incorrect. The correct answer was {q['correct_option']}."
-            st.info(f"Hint: {q['hint']}")
+if "quiz" in st.session_state:
 
-    if st.session_state.get('answer_submitted'):
-        st.markdown(f"**{st.session_state.feedback}**")
+    quiz = st.session_state.quiz
+    index = st.session_state.quiz_index
+    questions = quiz["questions"]
+
+    if index < len(questions):
+
+        q = questions[index]
+
+        st.markdown("---")
+        st.subheader(f"Concept Check ({index+1}/3)")
+        st.write(q["question"])
+
+        options_list = [f"{k}) {v}" for k, v in q["options"].items()]
+
+        user_choice = st.radio(
+            "Select the correct answer:",
+            options_list,
+            key=f"quiz_radio_{index}"
+        )
+
+        if st.checkbox("Show hint"):
+            st.info(q["hint"])
+
+        if st.button("Submit Answer"):
+
+            selected_letter = user_choice[0]
+
+            if selected_letter == q["correct_option"]:
+                st.session_state.quiz_feedback = "correct"
+                st.session_state.quiz_score += difficulty_points[q["difficulty"]]
+            else:
+                st.session_state.quiz_feedback = "incorrect"
+
+            st.session_state.quiz_answer_submitted = True
+
+        if st.session_state.quiz_answer_submitted:
+
+            if st.session_state.quiz_feedback == "correct":
+                st.success("Correct!")
+
+            else:
+                st.error(f"Incorrect. Correct answer: {q['correct_option']}")
+
+            if st.button("Next Question"):
+                st.session_state.quiz_index += 1
+                st.session_state.quiz_answer_submitted = False
+                st.session_state.quiz_feedback = None
+                st.rerun()
+
+    else:
+
+        score = st.session_state.quiz_score
+        clarity = score / 6
+
+        st.markdown("---")
+        st.subheader("Quiz Completed")
+
+        st.write(f"Score: {score}/6")
+        st.write(f"Concept clarity score: **{clarity:.2f}**")
+
+        if clarity >= 0.8:
+            st.success("Strong understanding.")
+        elif clarity >= 0.5:
+            st.warning("Moderate understanding.")
+        else:
+            st.error("Concept needs more review.")
+
+        if st.button("Clear Quiz"):
+            del st.session_state.quiz
+            del st.session_state.quiz_index
+            del st.session_state.quiz_score
+            st.rerun()
 
 st.markdown("---")
 st.caption("Powered by local FAISS, SQLite, and Ollama for fully offline learning.")
