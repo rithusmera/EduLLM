@@ -5,11 +5,13 @@ from sentence_transformers import SentenceTransformer
 import llm_client
 import RAGPipeline
 import concept_quiz
+import student_state
 
 DB_PATH = 'edu_chunks.db'
 IDX_PATH = 'edu_index.faiss'
 MODEL_NAME = 'all-MiniLM-L6-v2'
 TOP_K_DEFAULT = 3
+STUDENT_ID = "default_student"
 
 difficulty_points = {
     "easy": 1,
@@ -25,6 +27,8 @@ def load_resources():
     return embedder, index, conn
 
 embedder, index, conn = load_resources()
+
+student_state.init_db()
 
 st.set_page_config(page_title="EduLLM Tutor", layout="wide")
 st.title("🎓 EduLLM — Offline AI Tutor")
@@ -62,7 +66,6 @@ if st.button("Generate Answer"):
                 retrieved_chunks = RAGPipeline.retrieve_similar_chunks(conn, ids)
 
             if retrieved_chunks:
-                print(retrieved_chunks)
                 context += "\n\n".join(chunk['content'] for chunk in retrieved_chunks.values())
                 for chunk in retrieved_chunks.values():
                     if chunk['parent_section_id']:
@@ -149,8 +152,36 @@ if "quiz" in st.session_state:
             if selected_letter == q["correct_option"]:
                 st.session_state.quiz_feedback = "correct"
                 st.session_state.quiz_score += difficulty_points[q["difficulty"]]
+                correctness = 1
             else:
                 st.session_state.quiz_feedback = "incorrect"
+                correctness = 0
+
+            topic_id = st.session_state.quiz["topic_id"]
+            question_id = str(index)  # temporary ID since questions are dynamic
+
+            student_state.log_attempt(
+                STUDENT_ID,
+                question_id,
+                topic_id,
+                correctness
+            )
+
+            old_mastery = student_state.get_mastery(
+                STUDENT_ID,
+                topic_id
+            )
+
+            new_mastery = student_state.update_mastery_score(
+                old_mastery,
+                correctness
+            )
+
+            student_state.save_mastery(
+                STUDENT_ID,
+                topic_id,
+                new_mastery
+            )
 
             st.session_state.quiz_answer_submitted = True
 
