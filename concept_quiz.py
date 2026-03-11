@@ -46,7 +46,7 @@ Textbook Context:
 {context}
 """
 
-def generate_mcq(context, metadata, max_retries = 3):
+def generate_concept_quiz(context, metadata, max_retries = 3):
     prompt = MCQ_PROMPT.format(context = context)
 
     for _ in range(max_retries): #If first attempt to get a response in proper json format fails, try again
