@@ -6,8 +6,6 @@ import llm_client
 import RAGPipeline
 import concept_quiz
 import student_state
-import chapter_quiz
-
 
 DB_PATH = "edu_chunks.db"
 IDX_PATH = "edu_index.faiss"
@@ -133,15 +131,7 @@ if st.button("Generate Answer"):
                 st.session_state.last_chunks = retrieved_chunks
 
             if context:
-
-                full_prompt = f"""
-Get context for the question from the given text.
-Don't limit yourself to the text.
-
-{context}
-
-Question: {query}
-"""
+                full_prompt = f"""Get context for the question from the given text. Don't limit yourself to the text.{context} Question: {query}"""
 
                 st.session_state.last_context = context
 
@@ -158,7 +148,6 @@ Question: {query}
 # --------------------------------------------------
 # CONCEPT QUIZ BUTTON
 # --------------------------------------------------
-
 st.sidebar.text("Take a quick quiz to check if you understood the concept!")
 
 if st.sidebar.button("📝 Take Concept Quiz"):
@@ -195,48 +184,13 @@ if st.sidebar.button("📝 Take Concept Quiz"):
 # --------------------------------------------------
 # CHAPTER QUIZ SELECTION
 # --------------------------------------------------
-
 st.sidebar.markdown("---")
-st.sidebar.subheader("📚 Chapter Quiz")
 
-subjects = chapter_quiz.get_available_subjects()
-
-selected_subject = st.sidebar.selectbox(
-    "Select Subject",
-    subjects
+st.sidebar.page_link(
+    "pages/chapter_quiz_page.py",
+    label="Chapter Quiz",
+    icon="📚"
 )
-
-chapters = chapter_quiz.get_available_chapters(selected_subject)
-
-selected_chapter = st.sidebar.selectbox(
-    "Select Chapter",
-    chapters
-)
-
-if st.sidebar.button("Start Chapter Quiz"):
-
-    chapter_file = chapter_quiz.get_chapter_file(
-        selected_subject,
-        selected_chapter
-    )
-
-    questions = chapter_quiz.load_questions(chapter_file)
-
-    chapter_questions = chapter_quiz.filter_by_chapter(
-        questions,
-        subject=selected_subject,
-        chapter=selected_chapter
-    )
-
-    quiz = chapter_quiz.sample_quiz_questions(chapter_questions)
-
-    st.session_state.chapter_quiz = quiz
-    st.session_state.chapter_index = 0
-    st.session_state.chapter_score = 0
-    st.session_state.show_next = False
-
-    st.rerun()
-
 
 # --------------------------------------------------
 # CONCEPT QUIZ UI
@@ -293,7 +247,6 @@ if "concept_questions" in st.session_state:
             else:
                 st.error(f"Incorrect. Correct answer: {q['correct_option']}")
 
-            # Next question button
             if st.button("Next Question"):
 
                 st.session_state.quiz_index += 1
@@ -318,81 +271,3 @@ if "concept_questions" in st.session_state:
             del st.session_state.quiz_answer_submitted
 
             st.rerun()
-
-
-# --------------------------------------------------
-# CHAPTER QUIZ UI
-# --------------------------------------------------
-
-if "chapter_quiz" in st.session_state:
-
-    quiz = st.session_state.chapter_quiz
-    index = st.session_state.chapter_index
-
-    if index < len(quiz):
-
-        q = quiz[index]
-
-        st.markdown("---")
-        st.subheader(f"Chapter Quiz ({index+1}/{len(quiz)})")
-
-        st.write(q["question"])
-
-        options_list = [
-            f"{k}) {v}" for k, v in q["options"].items()
-        ]
-
-        user_choice = st.radio(
-            "Select the correct answer:",
-            options_list,
-            key=f"chapter_radio_{index}"
-        )
-
-        if st.button("Submit Answer"):
-
-            selected_letter = user_choice[0]
-
-            if selected_letter == q["correct_option"]:
-
-                st.success("Correct")
-                st.session_state.chapter_score += 1
-
-            else:
-
-                st.error(f"Incorrect. Correct answer: {q['correct_option']}")
-
-            st.session_state.show_next = True
-
-        if st.session_state.show_next:
-
-            if st.button("Next Question"):
-
-                st.session_state.chapter_index += 1
-                st.session_state.show_next = False
-                st.rerun()
-
-    else:
-
-        score = st.session_state.chapter_score
-
-        st.markdown("---")
-        st.subheader("Chapter Quiz Completed")
-
-        st.write(f"Score: {score}/{len(quiz)}")
-
-        if st.button("Clear Chapter Quiz"):
-
-            del st.session_state.chapter_quiz
-            del st.session_state.chapter_index
-            del st.session_state.chapter_score
-            del st.session_state.show_next
-
-            st.rerun()
-
-
-# --------------------------------------------------
-
-st.markdown("---")
-st.caption(
-    "Powered by local FAISS, SQLite, and Ollama for fully offline learning."
-)
