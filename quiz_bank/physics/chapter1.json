@@ -1,0 +1,344 @@
+{
+ "questions": [
+
+  {
+   "id": "UM01",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec1",
+    "difficulty": 1,
+   "question": "Measurement of a physical quantity requires comparison with what?",
+   "options": {
+    "A": "Another physical quantity",
+    "B": "A standard unit",
+    "C": "A derived quantity",
+    "D": "A physical constant"
+   },
+   "correct_option": "B",
+   "hint": "Measurement always compares something with a standard."
+  },
+
+  {
+   "id": "UM02",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec1",
+    "difficulty": 1,
+   "question": "Which of the following is a fundamental physical quantity?",
+   "options": {
+    "A": "Velocity",
+    "B": "Force",
+    "C": "Mass",
+    "D": "Density"
+   },
+   "correct_option": "C",
+   "hint": "Base quantities cannot be expressed in terms of others."
+  },
+
+  {
+   "id": "UM03",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec2",
+    "difficulty": 1,
+   "question": "Which system of units is currently used internationally?",
+   "options": {
+    "A": "CGS",
+    "B": "FPS",
+    "C": "SI",
+    "D": "MKS"
+   },
+   "correct_option": "C",
+   "hint": "International System of Units."
+  },
+
+  {
+   "id": "UM04",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec2",
+    "difficulty": 1,
+   "question": "The SI base unit of length is:",
+   "options": {
+    "A": "Centimeter",
+    "B": "Meter",
+    "C": "Foot",
+    "D": "Kilometer"
+   },
+   "correct_option": "B",
+   "hint": "Symbol: m"
+  },
+
+  {
+   "id": "UM05",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec2",
+    "difficulty": 1,
+   "question": "The SI base unit of time is:",
+   "options": {
+    "A": "Minute",
+    "B": "Hour",
+    "C": "Second",
+    "D": "Day"
+   },
+   "correct_option": "C",
+   "hint": "Symbol: s"
+  },
+
+  {
+   "id": "UM06",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec3",
+    "difficulty": 2,
+   "question": "How many significant figures are there in 0.00520?",
+   "options": {
+    "A": "2",
+    "B": "3",
+    "C": "4",
+    "D": "5"
+   },
+   "correct_option": "B",
+   "hint": "Leading zeros are not significant."
+  },
+
+  {
+   "id": "UM07",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec3",
+    "difficulty": 2,
+   "question": "Which number has four significant figures?",
+   "options": {
+    "A": "0.0045",
+    "B": "2.030",
+    "C": "1500",
+    "D": "0.50"
+   },
+   "correct_option": "B",
+   "hint": "Zeros between digits count."
+  },
+
+  {
+   "id": "UM08",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec4",
+    "difficulty": 2,
+   "question": "The dimensional formula of velocity is:",
+   "options": {
+    "A": "M L T^-1",
+    "B": "L T^-1",
+    "C": "M L T^-2",
+    "D": "L T^-2"
+   },
+   "correct_option": "B",
+   "hint": "Velocity = distance / time."
+  },
+
+  {
+   "id": "UM09",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec4",
+    "difficulty": 2,
+   "question": "The dimensional formula of force is:",
+   "options": {
+    "A": "M L T^-2",
+    "B": "M L^-1 T^-2",
+    "C": "M T^-2",
+    "D": "L T^-2"
+   },
+   "correct_option": "A",
+   "hint": "Force = mass × acceleration."
+  },
+
+  {
+   "id": "UM10",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec4",
+    "difficulty": 2,
+   "question": "The dimensional formula of energy is:",
+   "options": {
+    "A": "M L^2 T^-2",
+    "B": "M L T^-2",
+    "C": "M L^-1 T^-2",
+    "D": "M L^2 T^-1"
+   },
+   "correct_option": "A",
+   "hint": "Energy = force × distance."
+  },
+
+  {
+   "id": "UM11",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec5",
+    "difficulty": 2,
+   "question": "Dimensional analysis is used to:",
+   "options": {
+    "A": "Derive formulas",
+    "B": "Check correctness of equations",
+    "C": "Convert units",
+    "D": "All of the above"
+   },
+   "correct_option": "D",
+   "hint": "It has multiple uses."
+  },
+
+  {
+   "id": "UM12",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec5",
+    "difficulty": 2,
+   "question": "Which of the following quantities is dimensionless?",
+   "options": {
+    "A": "Strain",
+    "B": "Force",
+    "C": "Velocity",
+    "D": "Momentum"
+   },
+   "correct_option": "A",
+   "hint": "Ratio of two lengths."
+  },
+{
+ "id": "UM21",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec1",
+    "difficulty": 1,
+ "question": "Which of the following is a derived physical quantity?",
+ "options": {
+  "A": "Length",
+  "B": "Time",
+  "C": "Area",
+  "D": "Mass"
+ },
+ "correct_option": "C",
+ "hint": "Derived quantities are combinations of base quantities."
+},
+
+{
+ "id": "UM22",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec2",
+    "difficulty": 1,
+ "question": "Which of the following is the SI unit of electric current?",
+ "options": {
+  "A": "Volt",
+  "B": "Ampere",
+  "C": "Coulomb",
+  "D": "Ohm"
+ },
+ "correct_option": "B",
+ "hint": "One of the seven SI base units."
+},
+
+{
+ "id": "UM23",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec3",
+    "difficulty": 1,
+ "question": "How many significant figures are present in 0.0405?",
+ "options": {
+  "A": "2",
+  "B": "3",
+  "C": "4",
+  "D": "5"
+ },
+ "correct_option": "B",
+ "hint": "Zeros between non-zero digits are significant."
+},
+
+{
+ "id": "UM24",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec4",
+    "difficulty": 3,
+ "question": "The dimensional formula of gravitational constant (G) is:",
+ "options": {
+  "A": "M^-1 L^3 T^-2",
+  "B": "M L^3 T^-2",
+  "C": "M^-1 L^2 T^-2",
+  "D": "M L^2 T^-1"
+ },
+ "correct_option": "A",
+ "hint": "Use Newton's law of gravitation."
+},
+
+{
+ "id": "UM25",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec4",
+    "difficulty": 3,
+ "question": "The dimensional formula of Planck's constant (h) is:",
+ "options": {
+  "A": "M L^2 T^-1",
+  "B": "M L^2 T^-2",
+  "C": "M L T^-1",
+  "D": "M L T^-2"
+ },
+ "correct_option": "A",
+ "hint": "Energy × time."
+},
+
+{
+ "id": "UM26",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec4",
+    "difficulty": 3,
+ "question": "If force is proportional to velocity squared and radius, the dimensional formula of the proportionality constant is:",
+ "options": {
+  "A": "M T^-2",
+  "B": "M L^-1 T^-2",
+  "C": "M L T^-2",
+  "D": "M L^-2 T^-2"
+ },
+ "correct_option": "A",
+ "hint": "F ∝ k v² r"
+},
+
+{
+ "id": "UM27",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec5",
+    "difficulty": 3,
+ "question": "If the percentage error in measuring length and breadth of a rectangle are 2% and 3% respectively, the percentage error in area is:",
+ "options": {
+  "A": "1%",
+  "B": "5%",
+  "C": "6%",
+  "D": "9%"
+ },
+ "correct_option": "B",
+ "hint": "Errors add for multiplication."
+},
+
+{
+ "id": "UM28",
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "section_id": "sec5",
+    "difficulty": 3,
+ "question": "Which type of error can be reduced by taking multiple measurements and averaging them?",
+ "options": {
+  "A": "Systematic error",
+  "B": "Random error",
+  "C": "Instrumental error",
+  "D": "Zero error"
+ },
+ "correct_option": "B",
+ "hint": "These arise due to unpredictable fluctuations."
+}
+
+ ]
+}
