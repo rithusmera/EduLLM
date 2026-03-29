@@ -1,11 +1,12 @@
 import streamlit as st
 import chapter_quiz
+import auth
 
+auth.require_login()
 
 st.set_page_config(page_title="Chapter Quiz", layout="wide")
 
 st.title("📚 Chapter Quiz")
-
 
 subjects = chapter_quiz.get_available_subjects()
 

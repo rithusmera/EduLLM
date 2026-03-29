@@ -1,4 +1,8 @@
 import streamlit as st
+import auth
+
+auth.require_login()
+
 import faiss
 import sqlite3
 from sentence_transformers import SentenceTransformer
@@ -6,12 +10,13 @@ import llm_client
 import RAGPipeline
 import concept_quiz
 import student_state
+import streamlit as st
 
 DB_PATH = "edu_chunks.db"
 IDX_PATH = "edu_index.faiss"
 MODEL_NAME = "all-MiniLM-L6-v2"
 TOP_K = 3
-STUDENT_ID = "default_student"
+STUDENT_ID = st.session_state.username
 
 
 @st.cache_resource
