@@ -1,0 +1,324 @@
+{
+ "questions": [
+  {
+   "id": "MSL01",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.1",
+   "difficulty": 1,
+   "question": "The study of motion of objects along a straight line is known as:",
+   "options": {
+    "A": "Circular motion",
+    "B": "Rectilinear motion",
+    "C": "Projectile motion",
+    "D": "Oscillatory motion"
+   },
+   "correct_option": "B",
+   "hint": "It refers to one-dimensional motion."
+  },
+  {
+   "id": "MSL02",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.1",
+   "difficulty": 1,
+   "question": "An object can be treated as a point object if:",
+   "options": {
+    "A": "It has no mass",
+    "B": "It moves with constant speed",
+    "C": "Its size is much smaller than the distance it moves",
+    "D": "It is perfectly spherical"
+   },
+   "correct_option": "C",
+   "hint": "This is a common approximation in kinematics."
+  },
+  {
+   "id": "MSL03",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.2",
+   "difficulty": 1,
+   "question": "The slope of a position-time (x-t) graph represents:",
+   "options": {
+    "A": "Distance",
+    "B": "Acceleration",
+    "C": "Velocity",
+    "D": "Displacement"
+   },
+   "correct_option": "C",
+   "hint": "It shows the rate of change of position with time."
+  },
+  {
+   "id": "MSL04",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.2",
+   "difficulty": 1,
+   "question": "Which of the following can be zero even if the distance covered is non-zero?",
+   "options": {
+    "A": "Average speed",
+    "B": "Total path length",
+    "C": "Displacement",
+    "D": "Instantaneous speed"
+   },
+   "correct_option": "C",
+   "hint": "It depends only on initial and final positions."
+  },
+  {
+   "id": "MSL05",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.3",
+   "difficulty": 1,
+   "question": "The SI unit of acceleration is:",
+   "options": {
+    "A": "m s",
+    "B": "m s^-1",
+    "C": "m s^-2",
+    "D": "m^2 s^-1"
+   },
+   "correct_option": "C",
+   "hint": "It is the rate of change of velocity."
+  },
+  {
+   "id": "MSL06",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.3",
+   "difficulty": 1,
+   "question": "If an object is slowing down, its acceleration is:",
+   "options": {
+    "A": "Positive",
+    "B": "Zero",
+    "C": "In the opposite direction of velocity",
+    "D": "In the same direction as velocity"
+   },
+   "correct_option": "C",
+   "hint": "This is often called retardation."
+  },
+  {
+   "id": "MSL07",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.4",
+   "difficulty": 1,
+   "question": "Which kinematic equation relates final velocity, initial velocity, acceleration, and time?",
+   "options": {
+    "A": "v = u + at",
+    "B": "s = ut + 1/2 at^2",
+    "C": "v^2 = u^2 + 2as",
+    "D": "v = u - at"
+   },
+   "correct_option": "A",
+   "hint": "This is the first equation of motion."
+  },
+  {
+   "id": "MSL08",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.5",
+   "difficulty": 1,
+   "question": "The relative velocity of object A with respect to object B (v_AB) is given by:",
+   "options": {
+    "A": "v_A + v_B",
+    "B": "v_A - v_B",
+    "C": "v_B - v_A",
+    "D": "v_A * v_B"
+   },
+   "correct_option": "B",
+   "hint": "It is the difference between their individual velocities."
+  },
+  {
+   "id": "MSL09",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.2",
+   "difficulty": 2,
+   "question": "A car travels half the distance with speed v1 and the other half with speed v2. The average speed is:",
+   "options": {
+    "A": "(v1 + v2) / 2",
+    "B": "2v1v2 / (v1 + v2)",
+    "C": "v1v2 / (v1 + v2)",
+    "D": "sqrt(v1v2)"
+   },
+   "correct_option": "B",
+   "hint": "Use the formula: Total Distance / Total Time."
+  },
+  {
+   "id": "MSL10",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.3",
+   "difficulty": 2,
+   "question": "The area under a velocity-time (v-t) graph represents:",
+   "options": {
+    "A": "Acceleration",
+    "B": "Momentum",
+    "C": "Displacement",
+    "D": "Speed"
+   },
+   "correct_option": "C",
+   "hint": "Integrate velocity over time."
+  },
+  {
+   "id": "MSL11",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.3",
+   "difficulty": 2,
+   "question": "A particle moves along a straight line. If its position is given by x = 2t^3, its velocity at t=2s is:",
+   "options": {
+    "A": "8 m/s",
+    "B": "16 m/s",
+    "C": "24 m/s",
+    "D": "12 m/s"
+   },
+   "correct_option": "C",
+   "hint": "Differentiate position with respect to time (dx/dt)."
+  },
+  {
+   "id": "MSL12",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.4",
+   "difficulty": 2,
+   "question": "A ball is thrown vertically upwards with a velocity of 20 m/s. What is its velocity at the highest point?",
+   "options": {
+    "A": "20 m/s",
+    "B": "10 m/s",
+    "C": "0 m/s",
+    "D": "-10 m/s"
+   },
+   "correct_option": "C",
+   "hint": "Objects momentarily stop at the peak of their trajectory."
+  },
+  {
+   "id": "MSL13",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.4",
+   "difficulty": 2,
+   "question": "For a body starting from rest and moving with uniform acceleration, the ratio of distances covered in successive seconds is:",
+   "options": {
+    "A": "1:2:3",
+    "B": "1:3:5",
+    "C": "1:4:9",
+    "D": "1:1:1"
+   },
+   "correct_option": "B",
+   "hint": "This is known as Galileo's law of odd numbers."
+  },
+  {
+   "id": "MSL14",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.5",
+   "difficulty": 2,
+   "question": "Two trains A and B are moving on parallel tracks with velocities 60 km/h and 40 km/h in the same direction. The relative velocity of A w.r.t B is:",
+   "options": {
+    "A": "100 km/h",
+    "B": "20 km/h",
+    "C": "-20 km/h",
+    "D": "50 km/h"
+   },
+   "correct_option": "B",
+   "hint": "Subtract the velocity of the observer from the object."
+  },
+  {
+   "id": "MSL15",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.3",
+   "difficulty": 2,
+   "question": "The acceleration of a particle at any instant is given by the:",
+   "options": {
+    "A": "Slope of x-t graph",
+    "B": "Area of v-t graph",
+    "C": "Slope of v-t graph",
+    "D": "Area of x-t graph"
+   },
+   "correct_option": "C",
+   "hint": "It is the derivative of velocity with respect to time."
+  },
+  {
+   "id": "MSL16",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.4",
+   "difficulty": 3,
+   "question": "A police van moving at 30 km/h fires a bullet with muzzle speed 150 m/s at a thief's car moving at 192 km/h. The speed of the bullet relative to the thief's car is:",
+   "options": {
+    "A": "150 m/s",
+    "B": "105 m/s",
+    "C": "192 m/s",
+    "D": "42 m/s"
+   },
+   "correct_option": "B",
+   "hint": "Convert all speeds to m/s and use relative velocity."
+  },
+  {
+   "id": "MSL17",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.4",
+   "difficulty": 3,
+   "question": "The distance covered by a particle in the nth second of its motion is given by:",
+   "options": {
+    "A": "u + a/2 (2n - 1)",
+    "B": "u + an",
+    "C": "ut + 1/2 at^2",
+    "D": "u + a/2 (n^2)"
+   },
+   "correct_option": "A",
+   "hint": "Derived by calculating Sn - S(n-1)."
+  },
+  {
+   "id": "MSL18",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.2",
+   "difficulty": 3,
+   "question": "For a particle moving with a constant acceleration, the x-t graph is a:",
+   "options": {
+    "A": "Straight line",
+    "B": "Circle",
+    "C": "Parabola",
+    "D": "Hyperbola"
+   },
+   "correct_option": "C",
+   "hint": "Position depends on the square of time."
+  },
+  {
+   "id": "MSL19",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.5",
+   "difficulty": 3,
+   "question": "Two balls are dropped from different heights h1 and h2. The ratio of times taken to reach the ground is:",
+   "options": {
+    "A": "h1 : h2",
+    "B": "h1^2 : h2^2",
+    "C": "sqrt(h1) : sqrt(h2)",
+    "D": "sqrt(h2) : sqrt(h1)"
+   },
+   "correct_option": "C",
+   "hint": "Time of fall t = sqrt(2h/g)."
+  },
+  {
+   "id": "MSL20",
+   "subject": "Physics",
+   "chapter": "Motion in a Straight Line",
+   "section_id": "sec2.3",
+   "difficulty": 3,
+   "question": "A particle's velocity changes from v to -v in time t with constant acceleration. The average velocity is:",
+   "options": {
+    "A": "v",
+    "B": "-v",
+    "C": "0",
+    "D": "v/2"
+   },
+   "correct_option": "C",
+   "hint": "Average velocity = total displacement / total time."
+  }
+ ]
+}
