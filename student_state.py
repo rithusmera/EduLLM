@@ -90,3 +90,61 @@ def log_attempt(student_id, question_id, topic_id, correctness, time_taken=0):
 
     conn.commit()
     conn.close()
+
+def record_attempt(student_id, question_id, topic_id, correctness, time_taken=0):
+    log_attempt(student_id, question_id, topic_id, correctness, time_taken)
+    old_score = get_mastery(student_id, topic_id)
+    new_score = update_mastery_score(old_score, correctness)
+    save_mastery(student_id, topic_id, new_score)
+    return new_score
+
+def get_study_plan(student_id, limit=5):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT
+        tm.topic_id,
+        tm.mastery_score,
+        tm.last_updated,
+        COUNT(a.attempt_id) AS attempts,
+        AVG(a.correctness) AS recent_accuracy
+    FROM topic_mastery tm
+    LEFT JOIN attempts a
+        ON a.student_id = tm.student_id
+        AND a.topic_id = tm.topic_id
+    WHERE tm.student_id = ?
+    GROUP BY tm.topic_id, tm.mastery_score, tm.last_updated
+    ORDER BY tm.mastery_score ASC, tm.last_updated DESC
+    LIMIT ?
+    """, (student_id, limit))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [
+        {
+            "topic_id": row[0],
+            "mastery_score": row[1],
+            "last_updated": row[2],
+            "attempts": row[3],
+            "recent_accuracy": row[4] if row[4] is not None else 0,
+            "priority": get_priority(row[1]),
+            "recommendation": get_recommendation(row[1]),
+        }
+        for row in rows
+    ]
+
+def get_priority(mastery_score):
+    if mastery_score < 0.45:
+        return "High"
+    if mastery_score < 0.7:
+        return "Medium"
+    return "Low"
+
+def get_recommendation(mastery_score):
+    if mastery_score < 0.45:
+        return "Review the explanation, then retake a concept quiz."
+    if mastery_score < 0.7:
+        return "Practice two more questions and check the hints."
+    return "Do a quick revision to keep it fresh."
