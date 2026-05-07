@@ -1,134 +1,70 @@
 import streamlit as st
 import login
+import theme as th
 
 login.init_user_db()
 
-# 1. PAGE CONFIG & GLOBAL STYLE
 st.set_page_config(page_title="EduLLM Login", layout="centered")
 
-st.markdown("""
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+# Login page: inject CSS but override button width for full-width login btns
+extra = """
+/* Full-width buttons on login page */
+div.stButton > button {
+    width: 100% !important;
+    padding: 0.7rem 1.5rem !important;
+    font-size: 15px !important;
+}
+"""
+st.markdown(th.get_css(extra=extra), unsafe_allow_html=True)
 
-    html, body, [class*="css"] {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        color: #1E293B !important;
-    }
+# Hide sidebar on login
+st.markdown('<style>[data-testid="stSidebar"]{display:none!important;}</style>', unsafe_allow_html=True)
 
-    /* Force visibility for all text */
-    .stMarkdown, .stText, p, span, label, div, h1, h2, h3 {
-        color: #1E293B !important;
-    }
+a = th.get_accent()
 
-    /* Hide Sidebar entirely on Login */
-    [data-testid="stSidebar"] {
-        display: none !important;
-    }
-
-    .stApp {
-        background-color: #F8FAFC !important;
-    }
-    
-    /* Hide Streamlit elements */
-    #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
-    
-    /* Global Rounded Corners & Input Styles */
-    .stButton>button, .stTextInput>div>div>input {
-        border-radius: 12px !important;
-        border: 1px solid #E2E8F0 !important;
-        background-color: #FFFFFF !important;
-        color: #1E293B !important;
-        height: 3rem !important;
-    }
-    
-    /* Indigo Pill Buttons */
-    div.stButton > button {
-        background-color: #22C55E !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 10px !important;
-        font-weight: 600 !important;
-        width: 100% !important;
-    }
-    
-    div.stButton > button:hover {
-        background-color: #16A34A !important;
-        color: white !important;
-    }
-    
-    /* Card Container */
-    .login-container {
-        background-color: white !important;
-        padding: 3rem;
-        border-radius: 20px;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        max-width: 450px;
-        margin: 2rem auto;
-    }
-
-    .login-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .login-title {
-        font-size: 32px;
-        font-weight: 800;
-        color: #0F172A !important;
-        letter-spacing: -0.025em;
-    }
-    .login-subtitle {
-        font-size: 15px;
-        color: #64748B !important;
-        margin-top: 0.5rem;
-    }
-
-    /* Tabs styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 2rem;
-        justify-content: center;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 3rem;
-        background-color: transparent !important;
-    }
-</style>
+# ── Header ───────────────────────────────────────────
+st.markdown(f"""
+    <div style="text-align:center;margin-bottom:2rem;margin-top:2rem;">
+        <div style="display:inline-flex;align-items:center;justify-content:center;
+                    width:56px;height:56px;border-radius:18px;
+                    background:linear-gradient(135deg,{a},{th._darken(a,24)});
+                    font-size:26px;margin-bottom:1rem;">📚</div>
+        <div style="font-size:30px;font-weight:800;color:#e2e8f0;letter-spacing:-0.025em;">EduLLM</div>
+        <div style="font-size:14px;color:#6b7280;margin-top:4px;">Offline AI Tutor — Class 11–12 Science</div>
+    </div>
 """, unsafe_allow_html=True)
 
+# ── Card wrapper ─────────────────────────────────────
 st.markdown("""
-    <div class="login-container">
-        <div class="login-header">
-            <div class="login-title">EduLLM</div>
-            <div class="login-subtitle">Offline Science Tutor</div>
-        </div>
+    <div style="background:#1e2030;border-radius:20px;border:1px solid #2a2b3d;
+                box-shadow:0 20px 40px rgba(0,0,0,0.4);padding:2.5rem 2.5rem 1.5rem;
+                max-width:420px;margin:0 auto;">
 """, unsafe_allow_html=True)
 
-tab1, tab2 = st.tabs(["Login", "Register"])
+tab1, tab2 = st.tabs(["  Sign In  ", "  Register  "])
 
 with tab1:
-    username = st.text_input("Username", key="login_user")
-    password = st.text_input("Password", type="password", key="login_pass")
-
-    st.markdown('<div style="margin-top: 1.5rem;"></div>', unsafe_allow_html=True)
-    if st.button("Sign In"):
+    st.markdown('<div style="height:8px"></div>', unsafe_allow_html=True)
+    username = st.text_input("Username", key="login_user", placeholder="Enter your username")
+    password = st.text_input("Password", type="password", key="login_pass", placeholder="Enter your password")
+    st.markdown('<div style="margin-top:1.2rem;"></div>', unsafe_allow_html=True)
+    if st.button("Sign In", key="signin_btn", use_container_width=True):
         if login.verify_user(username, password):
             st.session_state.logged_in = True
             st.session_state.username = username
-            st.success("Welcome back")
+            st.success("Welcome back!")
             st.switch_page("app.py")
         else:
             st.error("Invalid credentials")
 
 with tab2:
-    new_user = st.text_input("New Username", key="reg_user")
-    new_pass = st.text_input("New Password", type="password", key="reg_pass")
-
-    st.markdown('<div style="margin-top: 1.5rem;"></div>', unsafe_allow_html=True)
-    if st.button("Create Account"):
+    st.markdown('<div style="height:8px"></div>', unsafe_allow_html=True)
+    new_user = st.text_input("New Username", key="reg_user", placeholder="Choose a username")
+    new_pass = st.text_input("New Password", type="password", key="reg_pass", placeholder="Choose a password")
+    st.markdown('<div style="margin-top:1.2rem;"></div>', unsafe_allow_html=True)
+    if st.button("Create Account", key="register_btn", use_container_width=True):
         if login.create_user(new_user, new_pass):
-            st.success("Account created successfully")
+            st.success("Account created! You can now sign in.")
         else:
             st.error("Username already exists")
 
