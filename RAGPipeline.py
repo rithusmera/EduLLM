@@ -31,18 +31,39 @@ def retrieve_similar_chunks(conn, ids):
     cursor = conn.cursor()
 
     placeholder = ','.join('?' * len(ids))
-    query= f'SELECT chunk_id, content, parent_section_id FROM chunks WHERE chunk_id IN ({placeholder})'
+    query= f'SELECT chunk_id, content, parent_section_id, subject, chapter, section_id FROM chunks WHERE chunk_id IN ({placeholder})'
     cursor.execute(query, ids)
-    return({row[0]: {'content': row[1], 'parent_section_id': row[2]} for row in cursor.fetchall()})
+    return({
+        row[0]: {
+            'content': row[1],
+            'parent_section_id': row[2],
+            'subject': row[3],
+            'chapter': row[4],
+            'section_id': row[5],
+        }
+        for row in cursor.fetchall()
+    })
 
 def retrieve_by_title(title, conn):
     '''Retrieving tables/figures/examples/exercises directly through title match instead of faiss similarity seach'''
 
     cursor = conn.cursor()
-    cursor.execute('SELECT id, content, parent_section_id FROM chunks WHERE LOWER(title) LIKE ?', (f"%{title.lower()}%", ))
+    cursor.execute(
+        'SELECT id, content, parent_section_id, subject, chapter, section_id FROM chunks WHERE LOWER(title) LIKE ?',
+        (f"%{title.lower()}%", )
+    )
     rows = cursor.fetchall()
     if rows:
-        return({row[0]: {'content': row[1], 'parent_section_id': row[2]} for row in rows}) 
+        return({
+            row[0]: {
+                'content': row[1],
+                'parent_section_id': row[2],
+                'subject': row[3],
+                'chapter': row[4],
+                'section_id': row[5],
+            }
+            for row in rows
+        }) 
     return None
     
 def retrieve_by_id(id, conn):
